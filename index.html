@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Mensagem Secreta</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+    #mensagem {
+      font-size: 20px;
+      padding: 20px;
+      background: #f2f2f2;
+      border-radius: 10px;
+      display: inline-block;
+    }
+  </style>
+  <script>
+    let tempo = 5; // tempo em segundos
+    function iniciar() {
+        if (localStorage.getItem('opened')) {
+            document.body.innerHTML = "<h2>Mensagem expirada ❌</h2>";
+            return;
+        }
+      let contador = setInterval(() => {
+        document.getElementById("timer").textContent = tempo;
+        tempo--;
+        if (tempo < 0) {
+          clearInterval(contador);
+          document.body.innerHTML = "<h2>Mensagem expirada ❌</h2>";
+        }
+        
+      }, 1000);
+      localStorage.setItem('opened', true); // marca como aberto
+    }
+
+    // dificultar print (não impede totalmente)
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "PrintScreen") {
+        navigator.clipboard.writeText("");
+        alert("Captura de tela desativada!");
+      }
+    });
+    document.addEventListener("contextmenu", e => e.preventDefault());
+  </script>
+</head>
+<body onload="iniciar()">
+  <div id="mensagem">
+    <p><strong>Mensagem:</strong> Esta é a mensagem secreta que expira.</p>
+    <p>Tempo restante: <span id="timer">50</span> segundos</p>
+  </div>
+</body>
+</html>
